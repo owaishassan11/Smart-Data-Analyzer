@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-4">
+  <div class="col-12">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h3>{{ record.name }}</h3>
+            <p class="text-muted">Preview of the cleaned dataset and quick analysis actions.</p>
+          </div>
+          <div>
+            <a class="btn btn-outline-primary me-2" href="{{ url_for('visualize', dataset_id=record.id) }}">Visualize</a>
+            <a class="btn btn-outline-secondary" href="{{ url_for('export_report', dataset_id=record.id) }}">Download PDF</a>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-md-4">
+            <div class="card bg-light p-3 mb-3">
+              <h6>Metadata</h6>
+              <p class="mb-1"><strong>Rows:</strong> {{ record.rows }}</p>
+              <p class="mb-1"><strong>Columns:</strong> {{ record.columns }}</p>
+              <p class="mb-0"><strong>Status:</strong> {{ record.status }}</p>
+            </div>
+            <div class="card p-3 mb-3">
+              <h6>Analysis Summary</h6>
+              <p class="mb-1"><strong>Numeric Features:</strong> {{ analysis.summary_statistics | length }}</p>
+              <p class="mb-1"><strong>Category Fields:</strong> {{ analysis.category_counts | length }}</p>
+              <p class="mb-0"><strong>Detected Trends:</strong> {{ analysis.trend_analysis | length }}</p>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <h5 class="mb-3">Dataset Preview</h5>
+            <div class="table-responsive">
+              <table class="table table-sm table-hover">
+                <thead>
+                  <tr>
+                    {% for key in columns %}
+                    <th>{{ key }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for row in preview %}
+                  <tr>
+                    {% for key in columns %}
+                    <td>{{ row[key] }}</td>
+                    {% endfor %}
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="card p-3">
+              <h5>Top Metrics</h5>
+              <div class="row">
+                {% for column, stats in analysis.summary_statistics.items() | list | slice(0, 4) %}
+                <div class="col-md-3 mb-3">
+                  <div class="border rounded p-2 h-100">
+                    <h6 class="small text-muted">{{ column }}</h6>
+                    <p class="mb-1"><strong>Mean:</strong> {{ stats.mean | round(2) }}</p>
+                    <p class="mb-1"><strong>Std:</strong> {{ stats.std | round(2) }}</p>
+                    <p class="mb-0"><strong>Max:</strong> {{ stats.max | round(2) }}</p>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

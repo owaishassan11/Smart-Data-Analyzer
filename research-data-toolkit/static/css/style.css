@@ -1,0 +1,24 @@
+:root {
+  color-scheme: light;
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+body {
+  background: #f5f7fb;
+}
+.navbar-brand {
+  font-weight: 700;
+}
+.card {
+  border-radius: 18px;
+}
+.table thead th {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+}
+.alert {
+  border-radius: 14px;
+}
+.btn-primary,
+.btn-success,
+.btn-secondary {
+  border-radius: 10px;
+}

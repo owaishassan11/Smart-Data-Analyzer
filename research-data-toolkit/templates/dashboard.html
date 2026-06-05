@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-4">
+  <div class="col-12 d-flex justify-content-between align-items-center">
+    <div>
+      <h2>Dashboard</h2>
+      <p class="text-muted">Welcome, {{ user.username }}. Review your latest datasets and analysis tasks.</p>
+    </div>
+    <a class="btn btn-primary" href="{{ url_for('upload') }}">Upload New Dataset</a>
+  </div>
+</div>
+<div class="row g-4">
+  <div class="col-12">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="card-title">Dataset history</h5>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Uploaded</th>
+                <th>Status</th>
+                <th>Rows</th>
+                <th>Columns</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for dataset in datasets %}
+              <tr>
+                <td>{{ dataset.name }}</td>
+                <td>{{ dataset.upload_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ dataset.status }}</td>
+                <td>{{ dataset.rows }}</td>
+                <td>{{ dataset.columns }}</td>
+                <td>
+                  <a class="btn btn-sm btn-outline-primary" href="{{ url_for('dataset_detail', dataset_id=dataset.id) }}">Details</a>
+                  <a class="btn btn-sm btn-outline-success" href="{{ url_for('analyze', dataset_id=dataset.id) }}">Analyze</a>
+                  <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('export_report', dataset_id=dataset.id) }}">Export</a>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="6" class="text-center text-muted">You have not uploaded any datasets yet.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
